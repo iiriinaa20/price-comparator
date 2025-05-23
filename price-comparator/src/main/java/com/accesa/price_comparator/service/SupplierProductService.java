@@ -1,5 +1,6 @@
 package com.accesa.price_comparator.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -65,12 +66,27 @@ public class SupplierProductService {
                 .toList();
     }
 
-    public List<SupplierProduct> getBestDiscountsById(Long id, int limit) {
+    public List<SupplierProduct> getBestDiscountsBySupplierId(Long id, int limit) {
         return repo.findByDiscountNotNullOrderByDiscountDesc()
                 .stream()
                 .filter(sp -> sp.getSupplier().getId() == id)
                 .limit(limit)
                 .toList();
+    }
+
+    public List<SupplierProduct> getNewDiscounts() {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        return repo.findByStartAfter(yesterday);
+
+    }
+
+
+    public List<SupplierProduct> getNewDiscountsBySupplierId(Long id) {
+        LocalDate yesterday = LocalDate.now().minusDays(1);
+        return repo.findByStartAfter(yesterday)
+                .stream().filter(sp->sp.getSupplier().getId() == id )
+                .toList();
+
     }
 
 }

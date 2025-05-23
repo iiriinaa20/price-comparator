@@ -1,6 +1,7 @@
 package com.accesa.price_comparator.controller;
 
 import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +58,16 @@ public class SupplierProductController {
 
     @GetMapping("/best-discounts/{id}")
     public List<SupplierProduct> bestDiscountsById(@PathVariable Long id, @RequestParam(defaultValue = "10") int limit) {
-        return service.getBestDiscountsById(id,limit);
+        return service.getBestDiscountsBySupplierId(id,limit);
+    }
+
+    @GetMapping("/new-discounts")
+    public List<SupplierProduct> newDiscounts() {
+        return service.getNewDiscounts();
+    }
+
+    @GetMapping("/new-discounts/{id}")
+    public List<SupplierProduct> newDiscounts(@PathVariable Long id) {
+        return service.getNewDiscountsBySupplierId(id);
     }
 }
