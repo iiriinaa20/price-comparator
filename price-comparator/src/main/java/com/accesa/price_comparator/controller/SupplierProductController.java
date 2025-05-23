@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.accesa.price_comparator.model.SupplierProduct;
 import com.accesa.price_comparator.service.SupplierProductService;
@@ -47,5 +48,15 @@ public class SupplierProductController {
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         service.delete(id);
+    }
+
+    @GetMapping("/best-discounts")
+    public List<SupplierProduct> bestDiscounts(@RequestParam(defaultValue = "10") int limit) {
+        return service.getBestDiscounts(limit);
+    }
+
+    @GetMapping("/best-discounts/{id}")
+    public List<SupplierProduct> bestDiscountsById(@PathVariable Long id, @RequestParam(defaultValue = "10") int limit) {
+        return service.getBestDiscountsById(id,limit);
     }
 }

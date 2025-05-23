@@ -57,4 +57,20 @@ public class SupplierProductService {
     public void delete(Long id) {
         repo.deleteById(id);
     }
+
+    public List<SupplierProduct> getBestDiscounts(int limit) {
+        return repo.findByDiscountNotNullOrderByDiscountDesc()
+                .stream()
+                .limit(limit)
+                .toList();
+    }
+
+    public List<SupplierProduct> getBestDiscountsById(Long id, int limit) {
+        return repo.findByDiscountNotNullOrderByDiscountDesc()
+                .stream()
+                .filter(sp -> sp.getSupplier().getId() == id)
+                .limit(limit)
+                .toList();
+    }
+
 }
