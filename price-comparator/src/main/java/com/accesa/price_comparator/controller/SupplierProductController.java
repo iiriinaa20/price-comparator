@@ -70,4 +70,12 @@ public class SupplierProductController {
     public List<SupplierProduct> newDiscounts(@PathVariable Long id) {
         return service.getNewDiscountsBySupplierId(id);
     }
+
+    @GetMapping("/price-history")
+    public List<SupplierProduct> getPriceHistoryBySupplierAndProduct(
+            @RequestParam Long productId,
+            @RequestParam Long supplierId
+    ) {
+        return service.getPriceHistoryBySupplierAndProduct(productId, supplierId);
+    }
 }

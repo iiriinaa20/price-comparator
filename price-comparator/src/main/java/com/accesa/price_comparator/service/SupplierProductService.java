@@ -89,4 +89,8 @@ public class SupplierProductService {
 
     }
 
+    public List<SupplierProduct> getPriceHistoryBySupplierAndProduct(Long productId, Long supplierId) {
+        return repo.findByProductIdAndSupplierIdOrderByIdAsc(productId, supplierId);
+    }
+
 }

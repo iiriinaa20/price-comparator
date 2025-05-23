@@ -8,7 +8,7 @@ import com.accesa.price_comparator.model.SupplierProduct;
 public interface SupplierProductRepository extends JpaRepository<SupplierProduct, Long> {
     List<SupplierProduct> findByDiscountNotNullOrderByDiscountDesc();
     List<SupplierProduct> findByStartAfter(LocalDate date);
-
+    List<SupplierProduct> findByProductIdAndSupplierIdOrderByIdAsc(Long productId, Long supplierId);
 
 }
 
