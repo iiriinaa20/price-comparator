@@ -2,11 +2,7 @@ package com.accesa.price_comparator.model;
 
 import java.time.LocalDate;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,4 +30,11 @@ public class SupplierProduct {
 
     private LocalDate start;
     private LocalDate end;
+
+    @Transient
+    public double getValuePerUnit() {
+        double effectivePrice = (discount != null) ? basePrice - basePrice*discount/100 : basePrice;
+        return quantity > 0 ? effectivePrice / quantity : 0;
+    }
+
 }

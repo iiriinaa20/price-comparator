@@ -98,7 +98,7 @@ public class SupplierProductService {
         return repo.findAll().stream()
                 .filter(p -> p.getQuantity() > 0)
                 .filter(p -> unit == null || unit.equalsIgnoreCase(p.getUnit()))
-                .sorted(Comparator.comparingDouble(p -> p.getBasePrice() / p.getQuantity()))
+                .sorted(Comparator.comparingDouble(SupplierProduct::getValuePerUnit))
                 .limit(limit)
                 .toList();
     }
