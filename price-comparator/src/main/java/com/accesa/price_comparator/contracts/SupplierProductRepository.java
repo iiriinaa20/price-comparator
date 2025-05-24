@@ -9,6 +9,6 @@ public interface SupplierProductRepository extends JpaRepository<SupplierProduct
     List<SupplierProduct> findByDiscountNotNullOrderByDiscountDesc();
     List<SupplierProduct> findByStartAfter(LocalDate date);
     List<SupplierProduct> findByProductIdAndSupplierIdOrderByIdAsc(Long productId, Long supplierId);
-
+    List<SupplierProduct> findByUnit(String unit);
 }
 

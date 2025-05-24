@@ -2,6 +2,7 @@ package com.accesa.price_comparator.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Comparator;
 
 import org.springframework.stereotype.Service;
 
@@ -91,6 +92,15 @@ public class SupplierProductService {
 
     public List<SupplierProduct> getPriceHistoryBySupplierAndProduct(Long productId, Long supplierId) {
         return repo.findByProductIdAndSupplierIdOrderByIdAsc(productId, supplierId);
+    }
+
+    public List<SupplierProduct> getBestValuePerUnit(String unit, int limit) {
+        return repo.findAll().stream()
+                .filter(p -> p.getQuantity() > 0)
+                .filter(p -> unit == null || unit.equalsIgnoreCase(p.getUnit()))
+                .sorted(Comparator.comparingDouble(p -> p.getBasePrice() / p.getQuantity()))
+                .limit(limit)
+                .toList();
     }
 
 }

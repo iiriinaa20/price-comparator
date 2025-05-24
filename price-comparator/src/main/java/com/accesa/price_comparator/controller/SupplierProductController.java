@@ -78,4 +78,12 @@ public class SupplierProductController {
     ) {
         return service.getPriceHistoryBySupplierAndProduct(productId, supplierId);
     }
+
+    @GetMapping("/best-value")
+    public List<SupplierProduct> getBestValuePerUnit(
+            @RequestParam(required = false) String unit,
+            @RequestParam(defaultValue = "10") int limit
+    ) {
+        return service.getBestValuePerUnit(unit, limit);
+    }
 }
