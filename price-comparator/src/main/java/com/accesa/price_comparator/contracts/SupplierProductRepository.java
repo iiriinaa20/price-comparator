@@ -4,6 +4,8 @@ import com.accesa.price_comparator.model.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.time.LocalDate;
+import java.util.Optional;
+
 import com.accesa.price_comparator.model.SupplierProduct;
 import com.accesa.price_comparator.model.Category;
 
@@ -19,6 +21,8 @@ public interface SupplierProductRepository extends JpaRepository<SupplierProduct
     List<SupplierProduct> findByProduct(Product product);
 
     List<SupplierProduct> findByProductId(Long productId);
+
+    Optional<SupplierProduct> findTopByProductIdAndSupplierIdOrderByStartDesc(Long productId, Long supplierId);
 
     //List<SupplierProduct> findByProductId(String productId);
 }
