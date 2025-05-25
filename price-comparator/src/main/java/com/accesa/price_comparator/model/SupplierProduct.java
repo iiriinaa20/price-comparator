@@ -37,4 +37,8 @@ public class SupplierProduct {
         return quantity > 0 ? effectivePrice / quantity : 0;
     }
 
+    public double getEffectivePrice() {
+        return getDiscountPrice() != null ? getDiscountPrice() : getBasePrice();
+    }
+
 }
