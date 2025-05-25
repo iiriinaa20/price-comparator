@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.temporal.IsoFields;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class PriceAlertService {
@@ -61,9 +62,15 @@ public class PriceAlertService {
         for (PriceAlert alert : alerts) {
             List<SupplierProduct> supplierOffers = supplierProductRepository.findByProductId(alert.getProduct().getId());
 
-            List<PriceAlertDto.OfferDto> matchingOffers = supplierOffers.stream()
+            Map<String, SupplierProduct> latestOffersBySupplier = supplierOffers.stream()
                     .filter(sp -> sp.getEffectivePrice() <= alert.getTargetPrice())
+                    .collect(Collectors.toMap(
+                            sp -> sp.getSupplier().getName(),
+                            sp -> sp,
+                            (existing, replacement) -> replacement
+                    ));
 
+            List<PriceAlertDto.OfferDto> matchingOffers = latestOffersBySupplier.values().stream()
                     .map(sp -> new PriceAlertDto.OfferDto(sp.getSupplier().getName(), sp.getEffectivePrice()))
                     .toList();
 

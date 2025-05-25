@@ -1,7 +1,6 @@
 package com.accesa.price_comparator.controller;
 
 import java.util.List;
-import java.time.LocalDate;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,17 +12,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.accesa.price_comparator.dto.ProductHistoryDto;
 import com.accesa.price_comparator.model.SupplierProduct;
 import com.accesa.price_comparator.service.SupplierProductService;
+import com.accesa.price_comparator.model.Category;
+import com.accesa.price_comparator.contracts.CategoryRepository;
+
 
 @RestController
 @RequestMapping("/api/supplier-product")
 public class SupplierProductController {
 
     private final SupplierProductService service;
+    private final CategoryRepository categoryRepository;
 
-    public SupplierProductController(SupplierProductService service) {
+
+
+    public SupplierProductController(SupplierProductService service, CategoryRepository categoryRepository) {
         this.service = service;
+        this.categoryRepository = categoryRepository;
     }
 
     @GetMapping
@@ -71,13 +78,6 @@ public class SupplierProductController {
         return service.getNewDiscountsBySupplierId(id);
     }
 
-    @GetMapping("/price-history")
-    public List<SupplierProduct> getPriceHistoryBySupplierAndProduct(
-            @RequestParam Long productId,
-            @RequestParam Long supplierId
-    ) {
-        return service.getPriceHistoryBySupplierAndProduct(productId, supplierId);
-    }
 
     @GetMapping("/best-value")
     public List<SupplierProduct> getBestValuePerUnit(

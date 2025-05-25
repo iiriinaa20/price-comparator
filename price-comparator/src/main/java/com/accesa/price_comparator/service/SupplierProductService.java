@@ -3,6 +3,7 @@ package com.accesa.price_comparator.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Comparator;
+import java.time.temporal.IsoFields;
 
 import org.springframework.stereotype.Service;
 
@@ -10,6 +11,8 @@ import com.accesa.price_comparator.contracts.ProductRepository;
 import com.accesa.price_comparator.contracts.SupplierProductRepository;
 import com.accesa.price_comparator.contracts.SupplierRepository;
 import com.accesa.price_comparator.model.SupplierProduct;
+import com.accesa.price_comparator.dto.ProductHistoryDto;
+import com.accesa.price_comparator.model.Category;
 
 @Service
 public class SupplierProductService {
@@ -60,6 +63,8 @@ public class SupplierProductService {
         repo.deleteById(id);
     }
 
+
+
     public List<SupplierProduct> getBestDiscounts(int limit) {
         return repo.findByDiscountNotNullOrderByDiscountDesc()
                 .stream()
@@ -90,8 +95,27 @@ public class SupplierProductService {
 
     }
 
-    public List<SupplierProduct> getPriceHistoryBySupplierAndProduct(Long productId, Long supplierId) {
-        return repo.findByProductIdAndSupplierIdOrderByIdAsc(productId, supplierId);
+
+    public List<ProductHistoryDto> getPriceHistoryBySupplierAndProduct(Long productId, Long supplierId) {
+        return repo.findByProductIdAndSupplierIdOrderByIdAsc(productId, supplierId).stream()
+                .map(sp -> new ProductHistoryDto(
+                        sp.getProduct().getName(),
+                        sp.getStart(),
+                        sp.getDiscountPrice() != null
+                                ? sp.getDiscountPrice()
+                                : sp.getBasePrice()
+                ))
+                .toList();
+    }
+
+    public List<ProductHistoryDto> getPriceHistoryByCatagoryAndProduct(Long productId, Category category) {
+        return repo.findByProductIdAndProductCategoryOrderByIdAsc(productId, category).stream()
+                .map(sp -> new ProductHistoryDto(
+                        sp.getProduct().getName(),
+                        sp.getStart(),
+                        sp.getDiscountPrice() != null ? sp.getDiscountPrice() : sp.getBasePrice()
+                ))
+                .toList();
     }
 
     public List<SupplierProduct> getBestValuePerUnit(String unit, int limit) {
